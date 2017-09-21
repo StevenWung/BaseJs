@@ -6,20 +6,24 @@
     <script src="../base.js"></script>
 </head>
 <body>
-    <div id="example1"></div>
-    <script>
-        var jr = new BaseJs.AjaxRender({
-            'id': 'example1',
-            'url': 'render_example.json',
-            'method': 'get',
-            'success': function (d) {
-                
-            },
-            'eachdata': function (index, item) {
-                
-            }
-        });
-        jr.rend
-    </script>
+<div id="example1">
+    <div>##name##</div>
+    <div>##id##</div>
+</div>
+<script>
+    var jr = new BaseJs.AjaxRender({
+        'id': 'example1',
+        'url': 'render_example.json',
+        'method': 'get',
+        'schema': 'data.result',
+        'success': function (d) {
+
+        },
+        'eachdata': function (index, item) {
+
+        }
+    });
+    jr.render();
+</script>
 </body>
 </html>

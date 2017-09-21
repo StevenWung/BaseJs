@@ -16,6 +16,7 @@
     <div id="example2"></div>
     <script>
         var js = new BaseJs.Ajax({
+            url: 'ajax_example.json',
             callback:function (resp) {
                 document.getElementById('example2').innerHTML = resp;
             }
@@ -25,11 +26,12 @@
     <div id="example3"></div>
     <script>
         var js = new BaseJs.Ajax({
+            url: 'ajax_example.json',
             callback:function (resp) {
                 document.getElementById('example3').innerHTML = resp;
             }
         });
-        js.post('ajax_example.json', {});
+        js.post('ajax_example.json');
     </script>
 </body>
 </html>
