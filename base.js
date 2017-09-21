@@ -35,8 +35,21 @@ BaseJs.Ajax.prototype = {
     }
 };
 BaseJs.AjaxRender = function (options) {
-
+    if (!options['url'])
+        throw("Url must be set!");
+    if (!options['id'])
+        throw("Id must be set!");
+    this.ajax = new BaseJs.Ajax({
+        'url': options
+    });
+    this.options = options;
 };
 BaseJs.AjaxRender.prototype = {
+    render: function () {
+        this.ajax.
+    }
+};
+BaseJs.Form = function () {
 
 };
+BaseJs.Form.prototype = {};
