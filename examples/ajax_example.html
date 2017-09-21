@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../base.js"></script>
+</head>
+<body>
+    <div id="example1"></div>
+    <script>
+        var js = new BaseJs.Http();
+        js.request('POST', 'ajax_example.json', '', function (resp) {
+            document.getElementById('example1').innerHTML = resp;
+        });
+    </script>
+    <div id="example2"></div>
+    <script>
+        var js = new BaseJs.Ajax({
+            callback:function (resp) {
+                document.getElementById('example2').innerHTML = resp;
+            }
+        });
+        js.get('ajax_example.json');
+    </script>
+    <div id="example3"></div>
+    <script>
+        var js = new BaseJs.Ajax({
+            callback:function (resp) {
+                document.getElementById('example3').innerHTML = resp;
+            }
+        });
+        js.post('ajax_example.json', {});
+    </script>
+</body>
+</html>
