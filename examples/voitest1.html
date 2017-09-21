@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" voi>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .row {
+            display: flex;
+            width: 100px;
+            border: 1px solid red;
+            margin-bottom: 10px;
+        }
+
+        .row div {
+            padding: 4px;
+            flex: 1;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body voi>
+<div>
+    <script>
+        function func(data, row) {
+            row.article_id = 'asdfad';
+            console.log(row);
+            return row;
+        }
+    </script>
+    <iterator datasource="voi.json" method="get" schema="result.data" beforeeach="func">
+        <div class="hot-news-list-row" id="hot-news-list-row">
+            <div>
+                <span class="layer layer{{layer}}">{{layer}}</span>
+                <span><a href="/news/view/{{id}}/{{title}}">{{title}}</a></span>
+            </div>
+        </div>
+    </iterator>
+</div>
+</body>
+<script src="../voi.js"></script>
+</html>

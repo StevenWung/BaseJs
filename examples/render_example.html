@@ -4,12 +4,28 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="../base.js"></script>
+    <style type="text/css">
+        .row {
+            display: flex;
+            width: 100px;
+            border: 1px solid red;
+            margin-bottom: 10px;
+        }
+
+        .row div {
+            padding: 4px;
+            flex: 1;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
-<div id="example1">
-    <div>##name##</div>
-    <div>##id##</div>
-</div>
+<iterator datasource="http">
+    <div id="example1" class="row">
+        <div>##id##</div>
+        <div>##name##</div>
+    </div>
+</iterator>
 <script>
     var jr = new BaseJs.AjaxRender({
         'id': 'example1',
@@ -24,6 +40,9 @@
         }
     });
     jr.render();
+    var x = document.getElementsByTagName('iterator');
+    console.log(x);
+    console.log(x[0].getAttribute('datasource'));
 </script>
 </body>
 </html>
