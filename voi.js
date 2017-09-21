@@ -92,7 +92,7 @@
                     if (!r || !Array.isArray(r)) {
                         //
                     }
-                    var dom = $this.options.element.children[0], doms = [], layer = 1;
+                    var dom = $this.options.element, doms = [], layer = 1;
                     var html = dom.outerHTML, output = '';
                     var reg = new RegExp('{{([a-z|A-Z|0-9|-|_]+)}}', 'ig');
                     var res = html.match(reg);
@@ -111,7 +111,12 @@
                         });
                         ele = $this.parser.parseFromString(tmp, "text/html");
                         child = ele.documentElement.querySelector('body').firstChild;
-                        child.setAttribute('layer', layer++)
+                        child.setAttribute('layer', layer++);
+                        child.removeAttribute('beforeeach');
+                        child.removeAttribute('datasource');
+                        child.removeAttribute('schema');
+                        child.removeAttribute('method');
+                        child.removeAttribute('iterator');
                         doms.push(child);
                     });
                     doms.forEach(function (t) {
@@ -124,8 +129,6 @@
         };
         return AjaxRender;
     })();
-
-
     Voi.Iterator = (function (_d) {
         function Iterator(voi, ele) {
             this.voi = voi;
@@ -147,12 +150,20 @@
         };
         return Iterator;
     })(_d);
+    Voi.Form = (function () {
+        function Form() {
+
+        }
+        Form.prototype.init = function () {
+
+        };
+        return Form;
+    })();
 
     Voi.prototype = {
         render: function (__) {
             if (!__.isvoi)return;
-            var iterators = __.body.getElementsByTagName('iterator');
-            _log(iterators);
+            var iterators = __.body.querySelectorAll('[iterator]');
             Array.from(iterators).forEach(function (t) {
                 (new Voi.Iterator(__, t)).init();
             });
@@ -167,5 +178,4 @@
     };
     var v = new Voi();
     v.init();
-    _log(v);
 })(window, document);
