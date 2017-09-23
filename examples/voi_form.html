@@ -2,7 +2,7 @@
 <html lang="en" voi>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Voi - Form</title>
     <style type="text/css">
         .row {
             display: flex;
@@ -20,18 +20,10 @@
 </head>
 <body voi>
 <div>
-
-
-    <div iterator class="hot-news-list-row" id="hot-news-list-row" datasource="voi.json" method="get" pager
-         schema="result.data" beforeeach="func">
-        <div>
-            <span class="layer layer{{layer}}">{{layer}}</span>
-            <span><a href="/news/view/{{id}}/{{title}}">{{title}}</a></span>
-        </div>
-    </div>
-
-    <form xform datasource="voi-form.json" method="get" schema="result" action="voi-form.json">
+    <form xform datasource="voi-form.json" schema="result" action="voi-form.json">
         <input name="name" value=""/>
+        <input name="value" value=""/>
+        <textarea name="text"></textarea>
         <input type="submit" value="submit"/>
     </form>
 </div>
