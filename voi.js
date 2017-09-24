@@ -50,6 +50,7 @@ window.voi = (function (_w, _d) {
                 };
                 var httpMethod = method.toLowerCase() === 'post' ? 'POST' : 'GET';
                 xhttp.open(httpMethod, url, true);
+                xhttp.setRequestHeader("AJAX-FORWORD-BASEPHP", "ENCODED-FOR-BASE");
                 this.headers.forEach(function (k) {
                     for(var i in k){
                         xhttp.setRequestHeader(i, k[i]);
@@ -118,7 +119,7 @@ window.voi = (function (_w, _d) {
                     }
                     var dom = $this.options.element, doms = [], layer = 1;
                     var html = dom.outerHTML, output = '';
-                    var reg = new RegExp('{{([a-z|A-Z|0-9|-|_]+)}}', 'ig');
+                    var reg = new RegExp('\\[\\[([a-z|A-Z|0-9|-|_]+)\\]\\]', 'ig');
                     var res = html.match(reg);
                     r.forEach(function (rr) {
                         var fn = _w[$this.options['beforeeach']];
@@ -127,9 +128,9 @@ window.voi = (function (_w, _d) {
                         }
 
                         var tmp = html, ele, child;
-                        tmp = tmp.replace(/{{layer}}/g, layer);
+                        tmp = tmp.replace(/\\[\\[layer\\]\\]/g, layer);
                         res.forEach(function (rss) {
-                            var v = rr[rss.replace(/{|}/g, '')];
+                            var v = rr[rss.replace(/\[|\]/g, '')];
                             if (v)
                                 tmp = tmp.replace(rss, v);
                         });
@@ -261,7 +262,91 @@ window.voi = (function (_w, _d) {
         };
         return XForm;
     })();
+    Voi.XBind = (function () {
+        function XBind(voi, ele) {
+            this.voi = voi;
+            this.ele = ele;
+            this.parser = new DOMParser();
+            this.datasource = this.ele.getAttribute('datasource');
+            this.schema = this.ele.getAttribute('schema') || 'result';
+        }
+        XBind.prototype.parseHtml = function(html){
+            var ele = this.parser.parseFromString(html, "text/html");
+            var child = ele.documentElement.querySelector('body').firstChild;
+            return child;
+        };
+        XBind.prototype.getJsonValue = function(schema, data){
+            var temp = data;
+            schema.split('.').forEach(function (t, m, n) {
+                if (t.indexOf('[') !==-1){
+                    var res = t.split(/\[|\]/);
+                    if (res.length){
+                        var d = res[0], i = parseInt(res[1]);
+                        temp = temp[d][i]
+                    }
+                }else{
+                    temp = temp[t];
+                }
+                //console.log(temp);
+            });
+            return temp;
+        };
+        XBind.prototype.init = function () {
+            var $this = this;
+            if (this.ele.length ){
+                this.ele = this.ele[0];
+            }
+            this.ele.style.display = 'none';
+            (new Voi.Ajax({
+                'url': this.datasource,
+                'callback': function (d) {
+                    var xbindData = $this.getJsonValue($this.schema, d);
+                    var rps = $this.ele.querySelectorAll('[repeater]');
+                    rps.forEach(function (p1, p2, p3) {
+                        var schema = p1.getAttribute('schema');
+                        var data = $this.getJsonValue(schema, xbindData);
+                        $this.parseRepeater(p1, data);
+                    });
+                    var html = $this.ele.outerHTML;
+                    var regs = html.match(new RegExp('\\[\\[([a-z|A-Z|0-9|-|_]+)\\]\\]', 'ig'))
+                    regs.forEach(function (t1, t2, t3) {
+                        var key = t1.replace(/\[|\]/g, '');
+                        var val = xbindData[key];
+                        html = html.replace(t1, val)
+                    })
+                    var dom = $this.parseHtml(html)
+                    dom.style.display = 'block';
+                    $this.ele.replaceWith(dom)
+                    console.log(dom);
 
+                }
+            })).get()
+
+        };
+        XBind.prototype.parseRepeater = function (ele, data) {
+            //console.log(ele, data)
+            var html = ele.outerHTML, $this = this;
+            var regs = html.match(new RegExp('\\[\\[([a-z|A-Z|0-9|-|_]+)\\]\\]', 'ig'))
+            ele.style.display = 'none';
+            if (data){
+                data.forEach(function (p1, p2, p3) {
+                    var tmpHtml = html, dom;
+                    regs.forEach(function (t1, t2, t3) {
+                        var key = t1.replace(/\[|\]/g, ''), val = '';
+                        if(key === 'key')
+                            val = key;
+                        else
+                            val = p1[key];
+                        tmpHtml = tmpHtml.replace(t1, val)
+                    })
+                    dom = $this.parseHtml(tmpHtml)
+                    //ele.parentNode.appendChild(dom)
+                    ele.parentNode.insertBefore(dom, ele)
+                })
+            }
+        }
+        return XBind;
+    })();
     Voi.prototype = {
         render: function (__) {
             var $this = this;
@@ -276,6 +361,11 @@ window.voi = (function (_w, _d) {
                 (new Voi.XForm(__, t)).init();
             });
             this.forms = forms;
+            var xbinds = __.body.querySelectorAll('[xbind]');
+            Array.from(xbinds).forEach(function (t) {
+                (new Voi.XBind(__, t)).init();
+            });
+            this.xbinds = xbinds;
         },
         init: function () {
             var __ = this;
