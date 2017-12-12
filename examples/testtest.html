@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;;
+        }
+
+        .doro-box {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            flex-flow: row wrap;
+            align-content: stretch;
+            justify-content: flex-start;
+            margin: -4px -4px;
+        }
+
+        .doro-item-box {
+            height: 25vw;
+            flex: 0 0 25vw;
+            margin-top: 0px;;
+        }
+
+        .doro-item-box > div {
+            padding: 10px;
+        }
+        .doro-item-box > div > div{
+            position: relative;
+            top: -20px;
+        }
+        .doro-image {
+            width: 100%;
+            height: calc(25vw - 20px);
+        }
+    </style>
+</head>
+<body>
+<div class="doro-box">
+    <div class="doro-item-box">
+        <div>
+            <img src="1.jpg" class="doro-image">
+            <div>adfasdfasd</div>
+        </div>
+    </div>
+    <div class="doro-item-box">
+        <div>
+            <img src="1.jpg" class="doro-image">
+        </div>
+    </div>
+    <div class="doro-item-box">
+        <div>
+            <img src="1.jpg" class="doro-image">
+        </div>
+    </div>
+    <div class="doro-item-box">
+        <div>
+            <img src="1.jpg" class="doro-image">
+        </div>
+    </div>
+    <div class="doro-item-box">
+        <div>
+            <img src="1.jpg" class="doro-image">
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

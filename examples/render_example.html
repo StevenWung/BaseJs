@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../base.js"></script>
+
     <style type="text/css">
         .row {
             display: flex;
@@ -19,30 +19,13 @@
         }
     </style>
 </head>
-<body>
-<iterator datasource="http">
+<body voi>
+<iterator datasource="render_example.json" schema="result">
     <div id="example1" class="row">
-        <div>##id##</div>
-        <div>##name##</div>
+        <div>[[id]]</div>
+        <div>[[name]]</div>
     </div>
 </iterator>
-<script>
-    var jr = new BaseJs.AjaxRender({
-        'id': 'example1',
-        'url': 'render_example.json',
-        'method': 'get',
-        'schema': 'data.result',
-        'success': function (d) {
-
-        },
-        'eachdata': function (index, item) {
-
-        }
-    });
-    jr.render();
-    var x = document.getElementsByTagName('iterator');
-    console.log(x);
-    console.log(x[0].getAttribute('datasource'));
-</script>
+<script src="../voi.js"></script>
 </body>
 </html>

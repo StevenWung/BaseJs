@@ -23,14 +23,14 @@
 
 
     <div xbind datasource="voi_bind.json" schema="result">
-        <div>{{row}}</div>
+        <div>[[row]]</div>
         <div repeater schema="data">
-            {{sex}}:{{name}}
+            [[sex]]:[[name]]
         </div>
         <div repeater schema="list">
-            {{addr}}:{{city}}
+            [[addr]]:[[city]]
         </div>
-        <div>{{pager}}</div>
+        <div>[[pager]]</div>
     </div>
 </div>
 </body>
